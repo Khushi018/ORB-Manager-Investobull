@@ -47,7 +47,7 @@ public class CandleController {
     }
 
     @GetMapping("/aggregate")
-    public List<Candle> aggregateCandles(@RequestParam("intervalMinutes") int intervalMinutes) {
+    public List<List<Candle>> aggregateCandles(@RequestParam("intervalMinutes") int intervalMinutes) {
         return candleService.aggregateCandles(intervalMinutes);
     }
 }
