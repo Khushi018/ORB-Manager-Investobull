@@ -65,15 +65,17 @@ public class CandleService {
     }
 
     public List<List<Candle>> aggregateCandles(int intervalMinutes) {
+    	// interval minutes should be multiple of 5
         if (intervalMinutes <= 0 || intervalMinutes % 5 != 0) {
-            throw new InvalidInputException("Interval minutes must be a positive multiple of 5");
+            throw new InvalidInputException("Interval minutes must be a positive and multiple of 5");
         }
         List<Candle> candles = findAll();
         List<List<Candle>> aggregatedCandles = new ArrayList<>();
         List<Candle> currentGroup = new ArrayList<>();
 
+        // 
         for (Candle candle : candles) {
-            if (currentGroup.isEmpty() ) {
+        	if (currentGroup.isEmpty() || candle.getLastTradeTime().isAfter(currentGroup.get(0).getLastTradeTime().plusMinutes(intervalMinutes))) {
                 if (!currentGroup.isEmpty()) {
                     aggregatedCandles.add(new ArrayList<>(currentGroup));
                     currentGroup.clear();
